@@ -1,0 +1,42 @@
+{block scripts}
+    {include parent}
+    {*ideálně by tohle bylo někde mimo, ale stačí*}
+    <script>
+        const sendJson = (data) => {
+            $.nette.ajax({
+                type: 'POST',
+                url: {link researchFormControl:action!}, //handle metoda z researchFormControl
+                data: data,
+                success: (payload) => {
+                    console.log(payload.message); // data z presenteru
+                    console.log(payload.json); // data z presenteru
+                }
+            });
+        };
+
+        const process = (e) => {
+            console.log(e.target.name);
+            sendJson({
+                name: e.target.name,
+                timestamp: Date.now(),
+                value: e.target.value
+            });
+        };
+
+        $(window).ready(() => {
+            const inputs = $('form :input');
+
+            inputs.on('click mouseover', (e) => {
+                process(e);
+            });
+
+        });
+    </script>
+{/block}
+
+{block content}
+
+
+{control researchFormControl}
+
+
